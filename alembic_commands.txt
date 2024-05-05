@@ -1,0 +1,6 @@
+alembic revision --autogenerate -m "first"
+alembic upgrade head
+alembic revision --autogenerate -m "added number in User table"
+alembic upgrade head
+alembic downgrade faa78a4c9715
+alembic upgrade 43c16eecdb83
