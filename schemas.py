@@ -38,9 +38,12 @@ class IdeaResp(Idea):
     class Config:
         from_attributes = True
 
-class IdeaRespOut(Idea):
-    Idea:Idea
+class IdeaRespOut(BaseModel):
+    idea:IdeaResp
     likes:int
+
+    class Config:
+        from_attributes = True
 
 class Token(BaseModel):
     access_token:str

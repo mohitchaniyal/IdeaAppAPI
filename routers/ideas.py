@@ -14,12 +14,19 @@ router = APIRouter(prefix="/ideaapp/api/v1/ideas",tags=["ideas"])
 
 @router.get("/",response_model=List[schemas.IdeaRespOut])
 def get_ideas(db: Session = Depends(get_db),limit:int=10,skip:int=0,search:Optional[str]=""):
-    ideas = db.query(models.Idea).filter(models.Idea.public==True,models.Idea.idea_name.contains(search)).limit(limit).offset(skip).all()
+    # ideas = db.query(models.Idea)
+    # print(ideas)
+   
+    ideas = db.query(
+        models.Idea,
+        func.count(models.Like.idea_id).label("likes")
+    ).join(models.Like, models.Idea.id == models.Like.idea_id,isouter=True).group_by(
+        models.Idea.id
+    ).filter(models.Idea.public==True,models.Idea.idea_name.contains(search)).limit(limit).offset(skip).all()
     if ideas==[]:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="No Data Available")
-    result = db.query(models.Idea,func.count(models.Like.idea_id).label("likes")).join(models.Like,models.Idea.id==models.Like.idea_id,isouter=True).group_by(models.Idea.id).all()
-    print(result)
-    return result
+
+    return [{"idea":record[0],"likes":record[1]} for record in ideas]
 
 @router.post("/",status_code=status.HTTP_201_CREATED,response_model=schemas.IdeaResp)
 def create_idea(idea:schemas.CreateIdea,db: Session = Depends(get_db),user_data:int = Depends(oauth2.get_current_user)):
