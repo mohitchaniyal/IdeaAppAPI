@@ -23,6 +23,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/")
+def get_home():
+    return {"detail":"Welcome to idea app"}
 app.include_router(ideas.router)
 app.include_router(users.router)
 app.include_router(auth.router)
