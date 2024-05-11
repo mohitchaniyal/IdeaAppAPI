@@ -1,0 +1,15 @@
+name: Deploy Idea API
+
+on: 
+  push:
+    branches: 
+      - "main"
+
+jobs:
+  job1:
+    runs-on: "ubuntu-letest"
+    steps:
+      - name: pulling gut repo
+        uses: actions/checkout@v2
+      - name: Say Hi
+        run: echo "hello Mohit"
