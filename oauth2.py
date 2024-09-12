@@ -8,7 +8,7 @@ from config import settings
 
 oauth2_schema = OAuth2PasswordBearer(tokenUrl='/ideaapp/api/v1/login')
 SECRET_KEY = settings.SECRET_KEY
-ALGORITHM = settings.ALGORRITHM
+ALGORITHM = settings.ALGORITHM
 ACCESS_TOKEN_EXPIRE_MINUTES = settings.ACCESS_TOKEN_EXPIRE_MINUTES
 
 def create_access_token(data:dict):
